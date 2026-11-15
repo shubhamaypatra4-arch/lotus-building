@@ -19509,7 +19509,10 @@ function createBuilding(canvas) {
     renderer.render(scene, camera);
   }
   tick();
-  const api = { setView: (n2) => VIEWS[n2] && VIEWS[n2](), setFloor, setWalk, walkMode: () => walk.on, seats: SEATS, scene };
+  const api = { setView: (n2) => VIEWS[n2] && VIEWS[n2](), setFloor, setWalk, walkMode: () => walk.on, press: (code, down) => {
+    if (down) keys.add(code);
+    else keys.delete(code);
+  }, seats: SEATS, scene };
   window.LOTUS_OFFICE_V3 = {
     seats: SEATS,
     floors: FLOOR_NAMES,
@@ -19821,6 +19824,7 @@ document.querySelectorAll("#views button").forEach((b2) => b2.addEventListener("
   if (bld.walkMode()) {
     bld.setWalk(false);
     $2("walkBtn").textContent = "\u{1F6B6} Andar ghuso \xB7 Walk";
+    syncPad();
   }
   bld.setView(b2.dataset.v);
   syncFloors();
@@ -19837,14 +19841,35 @@ document.querySelectorAll("#floors button").forEach((b2) => b2.addEventListener(
   if (bld.walkMode()) {
     bld.setWalk(false);
     $2("walkBtn").textContent = "\u{1F6B6} Andar ghuso \xB7 Walk";
+    syncPad();
   }
   bld.setView({ all: "tower", 0: "ground", 1: "f1", 2: "f2", 3: "f3", 4: "f4" }[b2.dataset.f]);
 }));
+var pad = $2("touchpad");
+function syncPad() {
+  pad.style.display = bld.walkMode() ? "flex" : "none";
+}
+pad.querySelectorAll("button").forEach((b2) => {
+  const dn2 = (e2) => {
+    e2.preventDefault();
+    bld.press(b2.dataset.k, true);
+  };
+  const up2 = (e2) => {
+    e2.preventDefault();
+    bld.press(b2.dataset.k, false);
+  };
+  b2.addEventListener("pointerdown", dn2);
+  b2.addEventListener("pointerup", up2);
+  b2.addEventListener("pointerleave", up2);
+  b2.addEventListener("pointercancel", up2);
+  b2.addEventListener("contextmenu", (e2) => e2.preventDefault());
+});
 $2("walkBtn").addEventListener("click", () => {
   const cur = document.querySelector("#floors button[aria-pressed=true]")?.dataset.f;
   const fl2 = cur && cur !== "all" ? +cur : 0;
   const on2 = bld.setWalk(!bld.walkMode(), fl2);
   $2("walkBtn").textContent = on2 ? "\u{1F5FA}\uFE0F Upar se dekho \xB7 Exit walk" : "\u{1F6B6} Andar ghuso \xB7 Walk";
+  syncPad();
 });
 mountPhase2(document);
 /**

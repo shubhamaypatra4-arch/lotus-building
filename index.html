@@ -31,6 +31,11 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .views{position:absolute;left:10px;top:10px;z-index:3;display:flex;gap:6px;flex-wrap:wrap;max-width:88%}
 .views button{background:rgba(23,20,18,.72);color:#fff;font-size:12.5px;font-weight:700;padding:6px 11px;border-radius:999px}
 .views button[aria-pressed=true]{background:var(--teal)}
+.touchpad{position:absolute;left:0;right:0;bottom:12px;z-index:4;display:none;justify-content:space-between;padding:0 14px;pointer-events:none}
+.touchpad .cluster{display:flex;flex-direction:column;gap:8px;align-items:center}
+.touchpad .row{display:flex;gap:8px}
+.touchpad button{pointer-events:auto;width:52px;height:52px;border-radius:50%;background:rgba(23,20,18,.66);color:#fff;font-size:20px;font-weight:800;border:1.5px solid rgba(255,255,255,.35)}
+.touchpad button:active{background:var(--teal)}
 .walkbtn{position:absolute;right:10px;top:10px;z-index:3;background:var(--bronze);color:#fff;font-size:13px;font-weight:800;padding:7px 13px;border-radius:999px}
 .hintbar{color:var(--muted);font-size:12.5px;margin-top:10px}
 .side{display:flex;flex-direction:column;gap:16px}
@@ -77,7 +82,17 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
         <button data-v="core" aria-pressed="false">👑 Core Cabins</button>
         <button data-v="dorm" aria-pressed="false">🛏 Dormitory</button>
       </div>
-      <button class="walkbtn" id="walkBtn">🚶 Andar ghuso · Walk</button>
+      <div class="touchpad" id="touchpad">
+      <div class="cluster">
+        <button data-k="KeyW" aria-label="Aage">▲</button>
+        <div class="row"><button data-k="KeyA" aria-label="Baayein">◀</button><button data-k="KeyS" aria-label="Peeche">▼</button><button data-k="KeyD" aria-label="Daayein">▶</button></div>
+      </div>
+      <div class="cluster">
+        <button data-k="KeyR" aria-label="Upar">⬆</button>
+        <button data-k="KeyF" aria-label="Neeche">⬇</button>
+      </div>
+    </div>
+    <button class="walkbtn" id="walkBtn">🚶 Andar ghuso · Walk</button>
     </div>
     <div class="floorline" id="floors">
       <button data-f="all" aria-pressed="true">Saari Floors</button>
@@ -87,7 +102,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
       <button data-f="3" aria-pressed="false">F3 · Core</button>
       <button data-f="4" aria-pressed="false">F4 · Dormitory</button>
     </div>
-    <div class="hintbar" id="hint">Drag = ghumao · wheel = zoom · Walk mode: WASD/arrow = chalo, mouse drag = dekho, R/F = upar/neeche, Shift = tez.</div>
+    <div class="hintbar" id="hint">Drag = ghumao · wheel = zoom · Walk mode: WASD/arrow = chalo, mouse drag = dekho, R/F = upar/neeche, Shift = tez. Phone par: Walk dabao, phir screen wale ▲▼◀▶ buttons se chalo, ungli ghiskakar dekho.</div>
   </section>
 
   <div class="side">
